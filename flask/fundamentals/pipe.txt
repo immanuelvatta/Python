@@ -1,0 +1,22 @@
+Creating our Virtual Environment and Installing Flask
+
+- Navigate into the project folder. Once you are in the project folder use
+
+	pipenv install flask
+
+Activating our Virtual Environment
+
+- Once you have installed the Flask package, you need to activate the environment in order to use it.
+	
+	pipenv shell
+
+Checking What's Installed with pip list
+
+- To check what is installed in your virtual environment, with your virtual environment activated, you can use:
+	pip list
+
+Deactivating our Virtual Environment
+
+- To deactivate the virtual environment we can use exit
+
+	exit
