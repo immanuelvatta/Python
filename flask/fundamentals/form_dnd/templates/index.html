@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div>
+            <h1>D&D Creator</h1>
+        </div>
+
+        <!-- d&D form -->
+        <form action="/character/create" method="post">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name">
+            </div>
+            
+            <div>
+                <label for="classes">Classes</label>
+                {% set class_types = ['Rogue', 'Fighter', 'Paladin', 'Bard', 'Wizard'] %}
+                <select name="classes" id="classes">
+                    <!-- <option value="rogue">Rogue</option>
+                    <option value="fighter">Fighter</option>
+                    <option value="paladin">Paladin</option>
+                    <option value="bard">Bard</option>
+                    <option value="wizard">Wizard</option> -->
+                    {% for class in class_types %}
+                        <option value="{{ class }}">{{ class }}</option> 
+                    {%endfor%}
+                </select>
+            </div>
+            <div>
+                <label for="weapons">Weapons</label>
+                {% set weapon_types = ['Sword', 'Crossbow', 'Wand', 'Fist', 'Dagger'] %}
+                <select name="weapons" id="weapons">
+                    {% for weapon in weapon_types %}
+                        <option value="{{ weapon }}">{{ weapon }}</option> 
+                    {%endfor%}
+                </select>
+            </div>
+
+            <div>
+                <label for="backstory">Backstory</label>
+                <textarea name="backstory" id="backstory" cols="30" rows="10"></textarea>
+            </div>
+            <div>
+                <button>Creator Character</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
