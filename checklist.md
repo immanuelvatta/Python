@@ -29,6 +29,7 @@ pip install pipenv
     app = Flask(__name__)
 
     @app.route('/')
+    app.secret_key = "do not forget to add secret key"
     def hello_world():
         return render_template('index.html')
 
