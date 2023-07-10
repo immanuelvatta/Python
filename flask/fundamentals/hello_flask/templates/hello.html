@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>{{name}} </h2>
+    <p>{{num}}</p>
+
+
+    {#! This is a for loop #}
+    {%for i in range(0,num) %}
+        <p>Hello {{name}}! </p>
+    {% endfor %}
+
+    {%if name == "hello" %}
+        <p>The phrase says hello</p>
+    {%else%}
+        <p>The phrase says {{name}} </p>
+    {% endif %}
+</body>
+</html>
