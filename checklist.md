@@ -259,8 +259,8 @@ def delete(id):
 
 ## create  \_\_init__.py file
 ```PY
-from flask import Flask, render_template, session, request, redirect
-#app = instance of Flask (class)
+from flask import Flask
+#app = instance of Flask(class)
 app = Flask(__name__)
 app.secret_key = "do not forget to add secret key"
 ```
