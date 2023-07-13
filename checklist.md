@@ -221,7 +221,7 @@ def create():
 
 @app.route('/users/new')
 def create_users():
-    return render_template('create_users.html')
+    return render_template('create_user.html')
 
 @app.route('/users/show/<int:id>')
 def display_user(id):
