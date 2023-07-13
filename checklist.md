@@ -53,11 +53,11 @@ pipenv shell
 ```Py
 from flask_app import app
 
+#TODO import controllers
+
 #MAKE SURE THIS IS AT THE BOTTOM
 if __name__=="__main__":
     app.run(debug=True)
-
-
 ```
 - Create templates folder
 - add index.html in templates folder
