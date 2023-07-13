@@ -27,24 +27,25 @@ pipenv shell
 ```
 - flask_app(📂)
     - config (📂)
-        - mysqlconnection.py(📄)
+        - mysqlconnection.py(📜)
     - controllers (📂)
         # You will have a controller file for every table table in your database
-        -controller_user.py(📄)
+        -controller_user.py(📜)
     - models (📂)
         # You will have a model file for every table in your database
-        model_user.py(📄)
+        model_user.py(📜)
     - static (📂)
         - css(📂)
-            - styles.css (📄)
+            - styles.css (📃)
         - img (📂)
         - js(📂)
+            - script.js (📃)
     - templates (📂)
         - index.html (📄)
-    - __init__.py (📄)
+    - __init__.py (📜)
 - pipfile(📄)
 - pipfile.lock(📄)
-- server.py(📄)
+- server.py(📜)
 ```
 
 ## Create server.py
