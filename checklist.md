@@ -37,7 +37,7 @@ pipenv shell
     - static (📂)
         - css(📂)
             - styles.css (📃)
-        - img (📂)
+        - img (📁)
         - js(📂)
             - script.js (📃)
     - templates (📂)
