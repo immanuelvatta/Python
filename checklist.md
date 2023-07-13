@@ -195,65 +195,44 @@ class User:
     - don't forget to import models
 ```PY
 from flask_app import app
-from flask import render_template, request, redirect, session
 
-from flask_app.models.model_user import User
-
-#THIS WILL MOVE
-
-@app.route('/')
-def index():
-    return redirect('/users')
-
-#READ
-@app.route('/users')
-def display_users():
-    # calling to 
-    all_users = User.get_all()
-    # passing all users to our template so we can display them there
-    return render_template("display_users.html", users = all_users)
-
-#CREATE
-@app.route('/users/create', methods=['POST'])
-def create():
-    User.create(request.form)
-    return redirect('/users')
-
-@app.route('/users/new')
-def create_users():
-    return render_template('create_user.html')
-
-@app.route('/users/show/<int:id>')
-def display_user(id):
-    data = {
-        'id' : id
-    }
-    user = User.get_one(data)
-    return render_template('display_user.html', user = user)
-
-#update
-@app.route('/users/update', methods=['POST'])
-def update():
-    User.update(request.form)
-    return redirect('/users')
+from flask import render_template, redirect
 
 
-@app.route('/users/edit/<int:id>')
-def update_user(id):
-    data = {
-        'id' : id
-    }
-    user= User.get_one(data)
-    return render_template('update_user.html', user = user)
+#fills out the form 
+@app.route('/user/new')
+def user_new():
+    return render_template('user_new.html')
 
-#delete
-@app.route('/users/delete/<int:id>')
-def delete(id):
-    data = {
-        'id' : id
-    }
-    User.delete(data)
-    return redirect('/users')
+#process  the form
+@app.route('/user/create', methods=['POST'])
+def user_create():
+    #do the creating
+    return redirect('/')
+
+
+@app.route('/user/<int:id>')
+def user_show(id):
+    return render_template("user_show".html)
+
+@app.route('/user/<int:id>/edit')
+def user_edit(id):
+    return render_template("user_edit.html")
+
+@app.route('/user/<int:id>/update', methods=['POST'])
+def user_update(id):
+    return redirect('/')
+
+@app.route('/user/<int:id>/delete')
+def user_delete(id):
+    return redirect('/')
+
+# '/user/new' -> display the route with the form
+# '/user/create' -> process the form from above
+# '/user/<int:id>' -> display the user's info -> Show
+# '/user/<int:id>/edit' -> display the user's info in a form so that they can edit it
+# '/user/<int:id>/update' -> process the edit form
+# '/user/<int:id>/delete' -> delete the user at that id
 
 ```
 
