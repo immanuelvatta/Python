@@ -1,5 +1,5 @@
 from flask_app import app
-from flask_app.controllers import controller_dealer, controller_car
+from flask_app.controllers import controller_dealer, controller_car, controller_routes
 
 
 if __name__=="__main__":

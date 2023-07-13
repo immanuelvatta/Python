@@ -28,11 +28,12 @@
                 <label for="dealer">Dealer</label>
                 <select name="dealer_id" id="dealer_id">
                     {% for dealer in all_dealers %}
-                        <option value="{{dealer.it}}">{{dealer.name}}</option>
+                        <option value="{{dealer.id}}">{{dealer.name}}</option>
                         
                     {% endfor %}
 
                 </select>
+                <button type="submit">Submit</button>
             </div>
         </form>
     </div>

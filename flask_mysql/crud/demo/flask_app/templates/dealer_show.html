@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{the_dealer.name}} Page</h1>
+    <div>
+        <p><strong>name:</strong> {{the_dealer.name}}</p>
+        <p><strong>location:</strong> {{the_dealer.location}}</p>
+    </div>
+
+    <div>
+        <p>ALl Vehicles on lot</p>
+        {% if the_dealer.all_cars | length > 0 %}
+            
+            <ul>
+            
+            {% for car in the_dealer.all_cars %}
+                <li>
+                    {{car.make}} || {{car.model}} || {{car.year}}
+                </li>
+            {% endfor %}    
+            </ul>
+        {% else %}
+    
+            <p> They have no cars</p>
+        {% endif %}
+
+    </div>
+</body>
+</html>

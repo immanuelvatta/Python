@@ -9,8 +9,9 @@ from flask_app.models.model_car import Car
 
 @app.route('/car/new')
 def car_new():
+    all_dealers = Dealer.get_all()
     all_cars = Car.get_all()
-    return render_template("car_new.html", all_cars = all_cars)
+    return render_template("car_new.html", all_dealers = all_dealers)
 
 @app.route('/car/create', methods=['POST'])
 def car_create():
