@@ -14,7 +14,7 @@ pip install pipenv
 - create the virtual env with flask
 
 ```console
-pipenv install flask PyMySQL
+pipenv install flask PyMySQL flask-bcrypt
 ```
 - WARNING! Make sure pipfile & pipfile.lock are there!! If not FIX THIS NOW!!!
 - activate virtual env
@@ -118,7 +118,12 @@ def connectToMySQL(db):
 # import the function that will return an instance of a connection
 #       folder  folder  file                    function
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask_app import bcrypt
+from flask import flash, session
 from flask_app import DATABASE
+import re # the regex module
+# create a regular expression object that we'll use later   
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 # model the class after the users table from  database
 class User:
     # should change db based on schema you're trying to access
@@ -167,6 +172,37 @@ class User:
         # data = {'id':id}
         results = connectToMySQL(DATABASE).query_db(query,data)
         return cls(results[0])
+
+    #* the get_one method will be used when we need to retrieve just one specific row of the table dojos
+    @classmethod
+    def get_one_with_joins(cls,data):
+        query = """SELECT * FROM dojos LEFT JOIN ninjas ON ninjas.dojo_id = dojos.id WHERE dojos.id = %(id)s;"""
+        # data = {'id':id}
+        results = connectToMySQL(DATABASE).query_db(query,data)#list of dictionaries
+        dict = results[0] # take first result out of the list
+        dojo_instance = cls(dict) # new instance of Dealer class from a dictionary
+        dojo_instance.all_ninjas = [] # taking an empty list and assigning it to dojo_instance.all_ninjas
+        if dict['ninjas.id'] != None : #if check to see if dictionary with this key is empty, then 
+        #! if there is no cars.id then there are no cars
+            # if there is something in ninjas.id (at least one ninja) then every other row a new ninja and it is associated to the same dojo
+            for ninja_dict in results:
+                #ninja_dict is going to hold a dictionary (all the dojo info, all the ninja info (for a singular ninja))
+                ninja_data = {
+                    #setting the specific data from car_dict you wanted 
+                    #all conflicting columns
+                    'id': ninja_dict['ninjas.id'],
+                    'created_at' : ninja_dict['ninjas.created_at'],
+                    'updated_at' : ninja_dict['ninjas.updated_at'],
+                    #all the rest of the columns
+                    'first_name' : ninja_dict['first_name'],
+                    'last_name' : ninja_dict['last_name'],
+                    'age' : ninja_dict['age'],
+                    'dojo_id' : ninja_dict['dojo_id']
+                }
+                ninja_instance = model_ninja.Ninja(ninja_data) # creating an instance of ninja  #!make sure you import the file model_ninja
+                dojo_instance.all_ninjas.append(ninja_instance) #populating the list that we assigned to the instance 
+                # now we have an individual list of car class objects (instances)  # now we have an individual list of car class objects (instances) 
+        return dojo_instance 
     
     
     #TODO UPDATE
@@ -189,13 +225,87 @@ class User:
         # data = {'id': id}
         #returns nothing
         return connectToMySQL(DATABASE).query_db(query,data)
+
+    
+    @staticmethod
+    #data:dict => request.form from the controller file -> html page
+    def validator(data:dict):
+        """
+        This method takes in a dictionary from the HTML page (usually request form) and checks 
+        each of the keys in that dictionary and sees if they match the requirement. 
+        If they dont then the validator will return false (meaning it is not valid) 
+        and if it does then it will return true (meaning it is valid)
+        """
+        is_valid = True
+    
+        if len(data['email']) < 5:
+            print("****ERR email****")
+            # session['erremail'] = "****ERR email bad****"
+            flash("****ERR email****")
+            flash("****ERR email****", 'err_dealer_email')
+            is_valid = False
+        elif not EMAIL_REGEX.match(data['email']): 
+            flash("Invalid email address!")
+            is_valid = False
+        
+        if len(data['password']) < 8:
+            print("****ERR password****")
+            flash("****ERR password****")
+            flash("****ERR password****", 'err_dealer_password')
+            is_valid = False
+        
+        return is_valid
+    
+    @staticmethod
+    def validator_login(data:dict):
+        """
+        This method takes in a dictionary from the HTML page (usually request form) and checks 
+        each of the keys in that dictionary and sees if they match the requirement. 
+        If they dont then the validator will return false (meaning it is not valid) 
+        and if it does then it will return true (meaning it is valid)
+        """
+        is_valid = True
+    
+        if len(data['email']) < 5:
+            print("****ERR email****")
+            # session['erremail'] = "****ERR email bad****"
+            flash("****ERR email****")
+            flash("****ERR email****", 'err_dealer_email')
+            is_valid = False
+        elif not EMAIL_REGEX.match(data['email']): 
+            flash("Invalid email address!")
+            is_valid = False
+        
+        if len(data['password']) < 8:
+            print("****ERR password****")
+            flash("****ERR password****")
+            flash("****ERR password****", 'err_dealer_password')
+            is_valid = False
+            
+        if is_valid == True:
+            potential_user = Dealer.get_one_by_email({'email': data['email']})
+            if not potential_user:
+                is_valid = False
+                flash("Invalid","err_dealer_email")
+            else:
+                #compare the password in the database with the password in the "data" dictionary 
+                output = bcrypt.check_password_hash(potential_user.password, data['password'])
+                print(f"******{output}********")
+                if output == False:
+                    is_valid = False
+                    flash("Invalid","err_dealer_password")
+                
+                else:
+                    session['dealer_id'] = potential_user.id
+                    print("***SESSION HAS BEEN SET****")
+        return is_valid
 ```
 
 ## create controller.py file
 - each controller has its own model
     - don't forget to import models
 ```PY
-from flask_app import app
+from flask_app import app, bcrypt
 
 from flask import render_template, redirect
 
@@ -242,8 +352,11 @@ def user_delete(id):
 ## create  \_\_init__.py file
 ```PY
 from flask import Flask
+from flask_bcrypt import Bcrypt
 #app = instance of Flask(class)
 app = Flask(__name__)
+bcrypt = Bcrypt(app)     # we are creating an object called bcrypt, 
+                         # which is made by invoking the function Bcrypt with our app as an argument
 app.secret_key = "do not forget to add secret key"
 DATABASE = "database_name"
 ```
