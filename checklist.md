@@ -118,6 +118,7 @@ def connectToMySQL(db):
 # import the function that will return an instance of a connection
 #       folder  folder  file                    function
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask_app import DATABASE
 # model the class after the users table from  database
 class User:
     # should change db based on schema you're trying to access
@@ -140,7 +141,7 @@ class User:
         """
         query = """INSERT INTO users (first_name, last_name, email)
                 VALUES (%(first_name)s, %(last_name)s,%(email)s);"""
-        result = connectToMySQL(cls.DB).query_db(query,data)
+        result = connectToMySQL(DATABASE).query_db(query,data)
         return result
     
     #TODO READ
@@ -152,7 +153,7 @@ class User:
         """
         query = """SELECT * FROM users;"""
         #what is results?  list !! list of what? dictionaries
-        results = connectToMySQL(cls.DB).query_db(query)
+        results = connectToMySQL(DATABASE).query_db(query)
         users = []
         #transform the list of dictionaries -> a list of object/instances
         for dict in results:
@@ -164,7 +165,7 @@ class User:
     def get_one(cls,data):
         query = """SELECT * FROM users WHERE id = %(id)s;"""
         # data = {'id':id}
-        results = connectToMySQL(cls.DB).query_db(query,data)
+        results = connectToMySQL(DATABASE).query_db(query,data)
         return cls(results[0])
     
     
@@ -175,7 +176,7 @@ class User:
         query = """UPDATE users 
                 SET first_name = %(first_name)s, last_name = %(last_name)s, email = %(email)s, updated_at = CURRENT_TIMESTAMP 
                 WHERE id = %(id)s;"""
-        return connectToMySQL(cls.DB).query_db(query,data)
+        return connectToMySQL(DATABASE).query_db(query,data)
     
     #TODO DELETE
     #* the delete method will be used when we need to delete a user from our database
@@ -187,7 +188,7 @@ class User:
         query = """DELETE FROM users WHERE id = %(id)s;"""
         # data = {'id': id}
         #returns nothing
-        return connectToMySQL(cls.DB).query_db(query,data)
+        return connectToMySQL(DATABASE).query_db(query,data)
 ```
 
 ## create controller.py file
@@ -213,7 +214,7 @@ def user_create():
 
 @app.route('/user/<int:id>')
 def user_show(id):
-    return render_template("user_show".html)
+    return render_template("user_show.html")
 
 @app.route('/user/<int:id>/edit')
 def user_edit(id):
@@ -242,4 +243,5 @@ from flask import Flask
 #app = instance of Flask(class)
 app = Flask(__name__)
 app.secret_key = "do not forget to add secret key"
+DATABASE = "database_name"
 ```
