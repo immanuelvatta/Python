@@ -199,6 +199,8 @@ from flask_app import app
 
 from flask import render_template, redirect
 
+#TODO change this
+from flask_app.models.model_user import User
 
 #fills out the form 
 @app.route('/user/new')
