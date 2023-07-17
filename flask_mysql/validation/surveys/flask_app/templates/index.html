@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Survey</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+</head>
+<body data-bs-theme="dark">
+    <div class= "container border border-primary">
+        <div class="d-flex justify-content-center">
+            <h1>Dojo Survey</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+            <form action="/form/create" method="post">
+                <div class="form-group">
+                    <label class="p-2" for="name">Name</label>
+                    <input class="form-control" type="text" name="name" id="id">
+                </div>
+
+                <div class="form-group">
+                    <label class="p-2" for="location">Dojo Location: </label>
+                    {% set locations = ['Chicago', 'New York', 'Austin', 'Los Angeles', 'Las Vegas'] %}
+                    <select class="form-select" name="location" id="location">
+                        <option value=""> Select Location</option>
+                        {% for location in locations %}
+                        <option value="{{location}}"> {{location}} </option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="p-2" for="language">Favorite Language: </label>
+                    {% set languages = ['Python', 'Java', 'C#', 'C++', 'JavaScript'] %}
+                    <select class="form-select" name="language" id="language">
+                        <option value=""> Select Language</option>
+                        {% for language in languages %}
+                            <option  value="{{language}}"> {{language}} </option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="p-2" for="Comment">Comment(Optional)</label>
+                    <textarea class="form-control" name="comment" id="comment" cols="30" rows="10"></textarea>
+                </div>
+                <div class="d-flex justify-content-end mb-3 mt-3">
+                    <button class="btn btn-info">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
+                {% if messages %}                            <!-- check if there are any messages -->
+                    {% for message in messages %}            <!-- loop through the messages -->
+                        <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+    </div>
+</body>
+</html>
