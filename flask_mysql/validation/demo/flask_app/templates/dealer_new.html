@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Create a new dealership</h1>
+
+    <form action="/dealer/create" method="post">
+        <div>
+            <label for="location">location</label>
+            <input type="text" name="location" id="location">
+        </div>
+        <div>
+            <label for="name">name</label>
+            <input type="text" name="name" id="name">
+        </div>
+        <div>
+            <label for="email">email</label>
+            <input type="text" name="email" id="email">
+            {% for message in get_flashed_messages(category_filter=['err_dealer_email']) %}
+            <p class="err-msg">{{message}}</p>
+            {% endfor %}
+        </div>
+        <div>
+            <label for="password">password</label>
+            <input type="text" name="password" id="password">
+            {% for message in get_flashed_messages(category_filter=['err_dealer_email']) %}
+            <p class="err-msg">{{message}}</p>
+            {% endfor %}
+        </div>
+        <button>add dealership</button>
+    </form>
+</body>
+</html>
