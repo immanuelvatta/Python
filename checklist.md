@@ -9,7 +9,7 @@ pip install pipenv
 ``` 
 
 # Start of checklist
-- Create a folder for our new assignment
+- Create a folder for new project
 - go into that folder
 - create the virtual env with flask
 
