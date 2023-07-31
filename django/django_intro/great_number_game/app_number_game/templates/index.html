@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Number Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body data-bs-theme="dark">
+    <div class = "d-flex flex-column align-items-center m-5 text-light-emphasis" >
+        <h1>Welcome to the Great Number Game!!!</h1>
+        <p>I am thinking of a number between 1 and 100</p>
+    </div>
+    <div>
+        <form class="d-flex justify-content-center align-items-center m-5" action="/guess" method="post">
+            {% csrf_token %}
+            <div class="col-auto m-3">
+                <label class="form-label text-light-emphasis" for="guess">Take a guess:</label>
+            </div>
+            <div class="col-auto m-3">
+                <input class ="form-control"  type="text" name="guess" id="guess">
+            </div>
+            <button class="ms-3 btn btn-outline-light" type="submit">Guess</button>
+        </form>
+        <!-- conditionals -->
+        
+        {% if 'guess' in request.session.keys %}
+        <!--* if success -->
+            {% if request.session.guess == request.session.num %}
+                <div class = "d-flex justify-content-center align-items-center m-5 p-1 text-success-emphasis bg-success-subtle border border-success-subtle rounded-3">
+                    <p class="m-2">You guessed the number!</p>
+                    <form action="/reset" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success m-3" type="submit">Reset</button>
+                    </form>
+                </div>
+            {% elif request.session.guess > request.session.num %}
+                <div class= "d-flex justify-content-center align-items-center m-5 p-2 text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-3">
+                    <p>Your guess is too high!!! Try again! </p>
+                </div>
+            {% else %}
+                <div class= "d-flex justify-content-center align-items-center m-5 p-2 text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-3">
+                    <p class="">Your guess is too low!!! Try again! </p>
+                </div>
+            {%endif%}
+        {%endif%}
+        </div>
+</body>
+</html>
