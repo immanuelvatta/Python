@@ -1,0 +1,20 @@
+from users_app.models import User
+
+User.objects.create(first_name="Immanuel",last_name="Vattakunnel",email_address="immanuelvatta@gmail.com",age=29)
+User.objects.create(first_name="Angel",last_name="Vattakunnel",email_address="angelcherian@hotmail.com",age=33)
+User.objects.create(first_name="Test",last_name="User",email_address="test@test.com",age=22)
+
+User.objects.all()
+User.objects.last()
+User.objects.first()
+
+User_to_update = User.objects.get(id=3)
+
+User_to_update.last_name = "Pancakes"
+User_to_update.save()
+
+User.objects.get(id=3).delete()
+
+User.objects.all().order_by('first_name') #ascending order
+User.objects.all().order_by('-first_name') #descending order
+
